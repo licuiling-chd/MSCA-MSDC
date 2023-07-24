@@ -1,6 +1,6 @@
-# Multiscale Spatial-Spectral Feature Extraction Network for Hyperspectral Image Classification
+# Computationally Lightweight Hyperspectral Image Classification Using a Multiscale Depthwise Convolutional Network With Channel Attention
 
-This repository is the implementation of our paper: [Multiscale Spatial-Spectral Feature Extraction Network for Hyperspectral Image Classification](https://ieeexplore.ieee.org/document/10150418). 
+This repository is the implementation of our paper: [Computationally Lightweight Hyperspectral Image Classification Using a Multiscale Depthwise Convolutional Network With Channel Attention](https://ieeexplore.ieee.org/document/10150418). 
 
 If you find this work helpful, please cite our paper:
 
