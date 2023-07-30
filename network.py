@@ -34,9 +34,8 @@ class MSDC(nn.Module):
         self.sp = _SplitChannels(channels, self.kernel_num)
         self.conv = nn.ModuleList()
         for i in range(self.kernel_num):
-            self.conv.append(nn.Sequential(nn.Conv2d(self.sp[i],
-                                                     self.sp[i],
-                                                     1),
+            self.conv.append(nn.Sequential(nn.Conv2d(self.sp[i], 
+                                                     self.sp[i], 1),
                                            nn.BatchNorm2d(self.sp[i]),
                                            nn.ReLU(),
                                            nn.Conv2d(self.sp[i],
@@ -44,7 +43,7 @@ class MSDC(nn.Module):
                                                      (self.k[i], self.k[i]),
                                                      (1, 1),
                                                      ((self.k[i] - 1) // 2, (self.k[i] - 1) // 2),
-                                                     groups=self.sp[i],
+                                                     groups=self.sp[i], 
                                                      bias=False)))
 
     def forward(self, x):
@@ -60,9 +59,9 @@ class MSDC(nn.Module):
 class MSCA_MSDC(nn.Module):
     def __init__(self, bands, classes):
         super(MSCA_MSDC, self).__init__()
+        self.att1 = MSCA()
         self.conv1 = nn.Conv2d(in_channels=bands, out_channels=bands, kernel_size=(1, 1))
         self.br1 = nn.Sequential(nn.BatchNorm2d(bands), nn.ReLU())
-        self.att = MSCA()
 
         self.conv2 = MSDC(bands, [3, 5, 7])
         self.br2 = nn.Sequential(nn.BatchNorm2d(bands), nn.ReLU())
@@ -78,10 +77,11 @@ class MSCA_MSDC(nn.Module):
         # input: (b, 1, d, w, h)
         _, _, d, _, _ = X.size()
         x = X.squeeze(1)
-        x = self.att(x)
+        x = self.att1(x)
         x = self.br1(self.conv1(x))
         x = self.br2(self.conv2(x))
         x = self.br3(self.conv3(x))
+
         x = self.avg_pooling(x)
         x = x.view(x.size(0), -1)
         x = self.fc(x)
